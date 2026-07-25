@@ -21,3 +21,6 @@ export const MealSchema = z.object({
       .min(1, 'Опишите что вы ели')
       .max(1000),
 });
+
+
+export type MealInput = z.infer<typeof MealSchema>;
