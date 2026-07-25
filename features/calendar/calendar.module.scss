@@ -1,0 +1,204 @@
+/* ─── Calendar container ─────────────────────────────────────────────────────── */
+
+.calendar {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: opacity var(--transition-base);
+}
+
+.pending {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.headerCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.monthLabel {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-transform: capitalize;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+    border-color: var(--color-text-secondary);
+  }
+}
+
+.todayButton {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover {
+    background: var(--color-primary-light);
+  }
+}
+
+/* ─── Weekday labels ─────────────────────────────────────────────────────────── */
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 12px 16px 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Day grid ───────────────────────────────────────────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 8px 16px 20px;
+  gap: 4px;
+}
+
+.emptyCell {
+  aspect-ratio: 1;
+}
+
+/* ─── Day cell ───────────────────────────────────────────────────────────────── */
+
+.dayCell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  gap: 4px;
+  padding: 4px;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.dayNumber {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+/* ─── States ─────────────────────────────────────────────────────────────────── */
+
+.today {
+  background: var(--color-primary-light);
+
+  .dayNumber {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  &:hover {
+    background: hsl(217, 91%, 90%);
+  }
+}
+
+.hasEntry {
+  .dayNumber {
+    font-weight: 600;
+  }
+}
+
+.otherMonth {
+  opacity: 0.4;
+}
+
+/* ─── Entry marker ───────────────────────────────────────────────────────────── */
+
+.marker {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: markerPulse 2s ease-in-out infinite;
+}
+
+@keyframes markerPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .dayNumber {
+    font-size: 0.8125rem;
+  }
+
+  .grid {
+    padding: 4px 8px 16px;
+    gap: 2px;
+  }
+
+  .header {
+    padding: 16px;
+  }
+}

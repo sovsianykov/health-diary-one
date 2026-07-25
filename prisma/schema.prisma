@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Core ────────────────────────────────────────────────────────────────────
+
+// Root entity representing a single calendar day.
+// All health records for that day are related to this entry.
+model DayEntry {
+  id            String         @id @default(cuid())
+  date          DateTime       @unique @db.Date
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  medications   Medication[]
+  meals         Meal[]
+  walks         Walk[]
+  stressRecords StressRecord[]
+  wellbeing     Wellbeing?
+
+  @@map("day_entries")
+}
+
+// ─── Medications ─────────────────────────────────────────────────────────────
+
+// A single medication taken on a specific day.
+// Multiple medications can be logged per day.
+model Medication {
+  id      String   @id @default(cuid())
+  dayId   String
+  day     DayEntry @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  name    String
+  takenAt String   // "HH:mm" 24h format
+  dosage  String?
+  notes   String?
+
+  @@map("medications")
+}
+
+// ─── Meals ───────────────────────────────────────────────────────────────────
+
+enum MealType {
+  breakfast
+  lunch
+  dinner
+  snack
+}
+
+// A single food intake entry.
+// Multiple meals can be logged per day.
+model Meal {
+  id          String   @id @default(cuid())
+  dayId       String
+  day         DayEntry @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  time        String   // "HH:mm"
+  type        MealType
+  description String
+
+  @@map("meals")
+}
+
+// ─── Walks ───────────────────────────────────────────────────────────────────
+
+// A physical walk or outdoor activity.
+// Multiple walks can be logged per day.
+model Walk {
+  id              String   @id @default(cuid())
+  dayId           String
+  day             DayEntry @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  startTime       String   // "HH:mm"
+  durationMinutes Int
+  distance        Float?   // kilometers
+  notes           String?
+
+  @@map("walks")
+}
+
+// ─── Stress ──────────────────────────────────────────────────────────────────
+
+// A stress level snapshot at a point in time.
+// Multiple stress records can be logged per day.
+model StressRecord {
+  id     String   @id @default(cuid())
+  dayId  String
+  day    DayEntry @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  time   String   // "HH:mm"
+  level  Int      // 1–10 scale
+  reason String?
+
+  @@map("stress_records")
+}
+
+// ─── Wellbeing ───────────────────────────────────────────────────────────────
+
+// Daily overall health snapshot. One record per day.
+// Covers subjective (mood, energy, pain) and objective (weight, BP, HR, temp) metrics.
+model Wellbeing {
+  id            String   @id @default(cuid())
+  dayId         String   @unique
+  day           DayEntry @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  energy        Int?     // 1–10
+  mood          Int?     // 1–10
+  pain          Int?     // 1–10 (0 = no pain)
+  sleepHours    Float?   // hours slept previous night
+  weight        Float?   // kg
+  bloodPressure String?  // "120/80" systolic/diastolic
+  heartRate     Int?     // bpm
+  temperature   Float?   // °C
+  notes         String?
+
+  @@map("wellbeing")
+}

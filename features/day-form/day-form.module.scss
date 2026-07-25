@@ -1,0 +1,97 @@
+/* ─── Form ───────────────────────────────────────────────────────────────────── */
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ─── Field Grid ─────────────────────────────────────────────────────────────── */
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+/* ─── Field List (dynamic arrays) ────────────────────────────────────────────── */
+
+.fieldList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 16px;
+  background: var(--color-surface-hover);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+  position: relative;
+
+  &:hover {
+    background: hsl(220, 14%, 95%);
+  }
+}
+
+.removeButton {
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+  margin-top: 28px; /* align with first input (after label) */
+
+  &:hover {
+    color: var(--color-danger);
+  }
+}
+
+/* ─── Empty hint ─────────────────────────────────────────────────────────────── */
+
+.emptyHint {
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: 0.875rem;
+  padding: var(--space-4) 0;
+}
+
+/* ─── Wellbeing specifics ────────────────────────────────────────────────────── */
+
+.wellbeingGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sliderGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .fieldGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .fieldRow {
+    flex-direction: column;
+  }
+
+  .removeButton {
+    margin-top: 0;
+    align-self: flex-end;
+  }
+}
