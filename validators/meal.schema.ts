@@ -7,7 +7,7 @@ const mealTypes = [
   'snack',
 ] as const;
 
-export const mealSchema = z.object({
+export const MealSchema = z.object({
   time: z
       .string()
       .regex(/^\d{2}:\d{2}$/, 'Неверный формат времени (HH:mm)'),
